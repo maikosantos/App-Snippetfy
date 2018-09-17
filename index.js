@@ -2,15 +2,9 @@ const express = require("express");
 const nunjucks = require("nunjucks");
 const path = require("path");
 const bodyParser = require("body-parser");
+const routes = require("./app/routes");
 
 const app = express();
-
-const { User } = require("./app/models");
-User.create({
-  name: "Maiko",
-  email: "maikossmaster@gmail.com",
-  password: "123456"
-});
 
 nunjucks.configure(path.resolve("app", "views"), {
   autoescape: true,
@@ -20,8 +14,6 @@ nunjucks.configure(path.resolve("app", "views"), {
 app.set("view engine", "njk");
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
+app.use("/", routes);
 
 app.listen(3000);
