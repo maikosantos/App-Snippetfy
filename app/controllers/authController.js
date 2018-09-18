@@ -47,4 +47,10 @@ module.exports = {
       res.redirect('app/dashboard');
     });
   },
+
+  sigout(req, res) {
+    return req.session.destroy(() => {
+      res.redirect('/');
+    });
+  },
 };
