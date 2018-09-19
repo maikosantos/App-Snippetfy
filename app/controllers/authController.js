@@ -34,7 +34,7 @@ module.exports = {
     try {
       const { email, password } = req.body;
 
-      const user = await User.finddOne({ where: { email } });
+      const user = await User.findOne({ where: { email } });
 
       if (!user) {
         req.flash('error', 'Usuário inexistente.');
