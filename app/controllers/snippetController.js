@@ -9,9 +9,10 @@ module.exports = {
         CategoryId: categoryId,
       });
 
-      req.flash('success', 'Snippet criado com sucesso');
+      req.flash('success', 'Snippet criado com sucesso.');
 
-      return res.redirect(`/app/categories/${categoryId}/snippets/${snippet.id}`);
+      return req.session.save(() =>
+        res.redirect(`/app/categories/${categoryId}/snippets/${snippet.id}`));
     } catch (error) {
       return next(error);
     }
@@ -51,9 +52,22 @@ module.exports = {
 
       await snippet.update(req.body);
 
-      req.flash('success', 'Snippet atualizado com sucesso');
+      req.flash('success', 'Snippet atualizado com sucesso.');
 
-      return res.redirect(`/app/categories/${req.params.categoryId}/snippets/${snippet.id}`);
+      return req.session.save(() =>
+        res.redirect(`/app/categories/${req.params.categoryId}/snippets/${snippet.id}`));
+    } catch (error) {
+      return next(error);
+    }
+  },
+
+  async destroy(req, res, next) {
+    try {
+      await Snippet.destroy({ where: { id: req.params.id } });
+
+      req.flash('success', 'Snippet removido com sucesso.');
+
+      return req.session.save(() => res.redirect(`/app/categories/${req.params.categoryId}`));
     } catch (error) {
       return next(error);
     }
